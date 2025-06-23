@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface AddBookModalProps {
   isOpen: boolean;
@@ -14,13 +14,26 @@ export const AddBookModal = ({ isOpen, onClose, onAddBook }: AddBookModalProps) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (title && author && price) {
-      await onAddBook({ title, author, price: parseFloat(price) });
+      try {
+        const bookData = { title, author, price: Number(price) };
+        await onAddBook(bookData);
+        setTitle('');
+        setAuthor('');
+        setPrice('');
+        onClose();
+      } catch (error) {
+        console.error('Error adding book:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
       setTitle('');
       setAuthor('');
       setPrice('');
-      onClose();
     }
-  };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

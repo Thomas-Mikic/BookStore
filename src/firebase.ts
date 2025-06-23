@@ -1,7 +1,15 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import type { Book } from './uiActions';
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDocs, 
+  deleteDoc, 
+  doc
+} from 'firebase/firestore';
+import type { DocumentData } from 'firebase/firestore';
+import type { Book } from './types/book';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -19,6 +27,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
+
+export { db };
+export { auth };
+export { provider };
+export { app };
+export { getDocs, collection, addDoc, deleteDoc, doc };
+export type { DocumentData };
 
 export const signInWithGoogle = async () => {
   try {
@@ -41,7 +56,12 @@ export const signOutUser = async () => {
 
 export const addDocument = async (book: Omit<Book, 'id'>) => {
   try {
-    const docRef = await addDoc(collection(db, 'books'), book);
+    const formattedBook = {
+      title: book.title,
+      author: book.author,
+      price: Number(book.price)
+    };
+    const docRef = await addDoc(collection(db, 'books'), formattedBook);
     return docRef.id;
   } catch (error) {
     console.error('Error adding document:', error);
@@ -49,28 +69,9 @@ export const addDocument = async (book: Omit<Book, 'id'>) => {
   }
 };
 
-export const getDocuments = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, 'books'));
-    return querySnapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        title: data.title,
-        author: data.author,
-        price: data.price
-      };
-    });
-  } catch (error) {
-    console.error('Error getting documents:', error);
-    throw error;
-  }
-};
-
 export const deleteDocument = async (id: string) => {
   try {
     await deleteDoc(doc(db, 'books', id));
-    return true;
   } catch (error) {
     console.error('Error deleting document:', error);
     throw error;
