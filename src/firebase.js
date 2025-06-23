@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
+//firebase keys config
 const firebaseConfig = {
   apiKey: "AIzaSyBuyO0TJ6PSssYZjUwvLJrTMTVHavB_0n0",
   authDomain: "bookstore-c42b9.firebaseapp.com",
@@ -17,6 +18,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const collectionName = "books";
 
+//setting up auth object, singleton object
 export const initAuth = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -33,6 +35,7 @@ export const onAuthStateChange = (callback) => {
 
 const provider = new GoogleAuthProvider();
 
+//sign in with gooogle 
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
@@ -44,6 +47,7 @@ export const signInWithGoogle = async () => {
   }
 };
 
+//sign user out
 export const signOutUser = async () => {
   try {
     await signOut(auth);
@@ -53,6 +57,7 @@ export const signOutUser = async () => {
   }
 };
 
+//add document to firestore or "book"
 export const addDocument = async (data) => {
   try {
     console.log("Adding document");
@@ -65,6 +70,7 @@ export const addDocument = async (data) => {
   }
 };
 
+//get all the books currently in the firestore database
 export const getDocuments = async () => {
     try {
         const snapshot = await getDocs(collection(db, collectionName));
@@ -75,6 +81,7 @@ export const getDocuments = async () => {
     }
 };
 
+//delete a document or book from firestore
 export const deleteDocument = async (docId) => {
   try {
     await deleteDoc(doc(db, collectionName, docId));
