@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useBooks } from '../hooks/useBooks';
 import { AddBookModal } from './AddBookModal';
 import type { Book } from '../types/book';
@@ -11,22 +11,45 @@ interface BooksListProps {
   itemsPerPage?: number;
 }
 
+type SortDirection = 'asc' | 'desc' | null;
+
 export const BooksList = ({ searchTerm, books, addBook, deleteBook, itemsPerPage = 10 }: BooksListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [priceSort, setPriceSort] = useState<SortDirection>(null);
 
   console.log('BooksList received books:', books);
 
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    book.author.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredBooks = useMemo(() => {
+    let result = [...books].filter((book) =>
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Apply price sorting if enabled
+    if (priceSort) {
+      result.sort((a, b) => 
+        priceSort === 'asc' ? a.price - b.price : b.price - a.price
+      );
+    }
+
+    return result;
+  }, [books, searchTerm, priceSort]);
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredBooks.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePriceSort = () => {
+    setCurrentPage(1); // Reset to first page when changing sort
+    setPriceSort(prev => {
+      if (prev === null) return 'asc';
+      if (prev === 'asc') return 'desc';
+      return null;
+    });
+  };
 
   const handleAddBook = async (book: { title: string; author: string; price: number }) => {
     try {
@@ -56,18 +79,38 @@ export const BooksList = ({ searchTerm, books, addBook, deleteBook, itemsPerPage
       />
       {filteredBooks.length > 0 ? (
         <>
-          <div className="books-grid">
+          <div className="books-table">
+            <div className="table-header">
+              <div className="header-cell number">#</div>
+              <div className="header-cell title">Title</div>
+              <div className="header-cell author">Author</div>
+              <div 
+                className="header-cell price sortable" 
+                onClick={handlePriceSort}
+              >
+                Price
+                {priceSort && (
+                  <span className="sort-arrow">
+                    {priceSort === 'asc' ? '↑' : '↓'}
+                  </span>
+                )}
+              </div>
+              <div className="header-cell actions">Actions</div>
+            </div>
             {currentItems.map((book, index) => (
-              <div key={book.id} className="book-item">
-                <span>
-                  {index + indexOfFirstItem + 1}. {book.title} by {book.author} - ${book.price}
-                </span>
-                <button 
-                  onClick={() => handleDeleteBook(book.id)} 
-                  className="delete-btn"
-                >
-                  Delete
-                </button>
+              <div key={book.id} className="table-row">
+                <div className="cell number">{index + indexOfFirstItem + 1}</div>
+                <div className="cell title">{book.title}</div>
+                <div className="cell author">{book.author}</div>
+                <div className="cell price">${book.price}</div>
+                <div className="cell actions">
+                  <button 
+                    onClick={() => handleDeleteBook(book.id)} 
+                    className="delete-btn"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
