@@ -19,10 +19,11 @@ body {
 #root {
   width: 100%;
   min-height: 100vh;
+  min-width: 700px; 
   background-color: #ffffff;
   color: #333333;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto; 
   padding: 2rem;
   box-sizing: border-box;
 }
@@ -35,12 +36,9 @@ body {
   color: #333333;
   align-items: center;
   gap: 1.5rem;
-  position: relative;
-  background-color: #ffffff;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  box-sizing: border-box;
 }
 
 h1 {
@@ -65,7 +63,6 @@ h1 {
   padding: 1rem 1.5rem;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   border: 1px solid #e0e0e0;
   margin: 0 auto;
 }
@@ -83,10 +80,9 @@ h1 {
 
 .logout-btn {
   padding: 0.6rem 1.25rem;
-  border: 1px solid #dc3545;
   border-radius: 4px;
-  background-color: white;
-  color: #dc3545;
+  background-color: #ff1010;
+  color: white;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 500;
@@ -94,12 +90,10 @@ h1 {
 }
 
 .logout-btn:hover {
-  background-color: #f8d7da;
+  background-color: #d50e0e;
+  transform: translateY(-1px);
 }
 
-.logout-btn:active {
-  transform: translateY(1px);
-}
 
 .search-bar {
   padding: 0.75rem 1.5rem;
@@ -115,65 +109,9 @@ h1 {
 .search-bar:focus {
   outline: none;
   border-color: #6a6a6a;
-  box-shadow: 0 0 0 3px rgba(106, 106, 106, 0.2);
 }
 
-.add-book-btn {
-  background-color: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
-}
 
-.add-book-btn:hover {
-  background-color: #1976D2;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(33, 150, 243, 0.3);
-}
-
-.books-list {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  background-color: transparent;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  border: none;
-}
-
-.books-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.book-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background-color: #ffffff;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 1rem;
-}
-
-.book-item span {
-  flex: 1;
-  margin-right: 1rem;
-}
 
 .pagination {
   display: flex;
@@ -185,7 +123,6 @@ h1 {
   border-radius: 8px;
   margin: 1rem 0;
   width: 100%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   border: 1px solid #e0e0e0;
   margin-top: 1.5rem;
 }
@@ -199,19 +136,16 @@ h1 {
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
 }
 
 .pagination-btn:hover:not(:disabled) {
   background-color: #1976D2;
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(33, 150, 243, 0.3);
 }
 
 .pagination-btn:disabled {
   background-color: #6a6a6a;
   cursor: not-allowed;
-  box-shadow: none;
 }
 
 .page-info {
@@ -223,158 +157,25 @@ h1 {
 .books-table {
   width: 100%;
   border-radius: 8px;
-  overflow: hidden;
   border: 1px solid #e0e0e0;
   background-color: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  margin: 0;
-  margin-top: 1.5rem;
-}
-
-.table-header {
-  display: grid;
-  grid-template-columns: 60px 2fr 2fr 1fr 120px;
-  background-color: #f8f9fa;
-  font-weight: 600;
-  color: #495057;
-  text-align: left;
-  border-bottom: 2px solid #e9ecef;
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: 60px 2fr 2fr 1fr 120px;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #e9ecef;
-  transition: background-color 0.2s ease;
-}
-
-.table-row:last-child {
-  border-bottom: none;
-}
-
-.table-row:hover {
-  background-color: #f5f5f5;
-}
-
-.header-cell, .cell {
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-}
-
-.header-cell {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #6c757d;
-  user-select: none;
-  font-weight: 600;
-  background-color: #f8f9fa;
-  position: relative;
-  padding-right: 2.5rem;
-}
-
-.header-cell.price {
-  text-align: right;
-  padding-right: 3rem;
-  cursor: pointer;
-}
-
-.header-cell.price .sort-arrow {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.9rem;
-  color: #0d6efd;
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  line-height: 1;
-  margin-left: 0.5rem;
-}
-
-.header-cell.sortable {
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.header-cell.sortable:hover {
-  color: #212529;
-}
-
-.header-cell .sort-arrow {
-  position: absolute;
-  right: 1rem;
-  font-size: 1rem;
-  line-height: 1;
-  color: #0d6efd;
-  margin-left: 0.5rem;
-  display: inline-block;
-  width: 1em;
-  text-align: center;
-}
-
-.cell {
-  font-size: 0.95rem;
-  color: #495057;
-}
-
-.cell.number {
-  color: #6c757d;
-  font-weight: 500;
-}
-
-.cell.title {
-  font-weight: 500;
-  color: #212529;
-}
-
-.cell.author {
-  color: #6c757d;
-}
-
-.cell.price {
-  color: #0d6efd;
-  font-weight: 500;
-}
-
-.delete-btn {
-  padding: 0.4rem 0.75rem;
-  font-size: 0.85rem;
-  border-radius: 4px;
-  background-color: #dc3545;
-  border: none;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-  max-width: 100px;
-  font-weight: 500;
 }
 
 .delete-btn:hover {
-  background-color: #bb2d3b;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.delete-btn {
-  background-color: #e53935;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
+  background-color: #c31212;
   transition: all 0.3s ease;
+  transform: translateY(-1px);
 }
 
-.delete-btn:hover {
-  background-color: #c62828;
-  transform: scale(1.05);
+
+
+.delete-btn {
+  background-color: #fb2020;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .search-bar {
@@ -386,17 +187,15 @@ h1 {
   width: 300px;
   font-size: 0.95rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .search-bar:focus {
   outline: none;
   border-color: #86b7fe;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 .add-book-btn {
-  background-color: #0d6efd;
+  background-color: #2a8f19;
   color: white;
   padding: 0.6rem 1.25rem;
   border: none;
@@ -405,17 +204,13 @@ h1 {
   font-size: 0.95rem;
   font-weight: 500;
   transition: background-color 0.15s ease-in-out, transform 0.1s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .add-book-btn:hover {
-  background-color: #0b5ed7;
+  background-color: #206c12;
   transform: translateY(-1px);
 }
 
-.add-book-btn:active {
-  transform: translateY(0);
-}
 
 .login-button {
   background-color: #4CAF50;
@@ -429,11 +224,6 @@ h1 {
 
 .login-button:hover {
   background-color: #45a049;
-}
-
-.books-list {
-  width: 100%;
-  margin-top: 0;
 }
 
 .login-button {
@@ -450,46 +240,6 @@ h1 {
   background-color: #45a049;
 }
 
-.books-list {
-  width: 100%;
-}
-
-.add-book-btn {
-  background-color: #2196F3;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.add-book-btn:hover {
-  background-color: #1976D2;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal {
-  background-color: #1a1a1a;
-  padding: 2rem;
-  border-radius: 8px;
-  position: relative;
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-}
 
 .close-btn {
   position: absolute;
@@ -533,8 +283,7 @@ h1 {
 
 .form-buttons {
   display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .add-btn, .cancel-btn {
@@ -562,36 +311,10 @@ h1 {
 }
 
 .cancel-btn:hover {
-  background-color: #555;
+  background-color: #323232;
   transform: translateY(-1px);
 }
 
-.books-grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.book-item {
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.delete-btn {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background-color: #d32f2f;
-}
 
 .logo {
   height: 6em;
@@ -600,43 +323,113 @@ h1 {
   transition: filter 300ms;
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-
-
-.app-container {
+/* Floating Add Button */
+.floating-add-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
   display: flex;
-  justify-content: center;  /* horizontal center */
-  align-items: center;      /* vertical center */
-  height: 100vh;            /* full viewport height */
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.floating-add-btn:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.close-btn:hover {
+  color: #212529;
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-group input {
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.form-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.form-actions button[type='submit'] {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.form-actions button[type='button'] {
+  background-color: #6c757d;
+  color: white;
+}
+
+.form-actions button:hover {
+  opacity: 0.9;
 }
 
 .login-button {
@@ -648,31 +441,6 @@ h1 {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-}
-
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 1rem;
-}
-
-.modal {
-  background: white;
-  border-radius: 8px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 500px;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .close-btn {
@@ -694,22 +462,15 @@ h1 {
   color: #212529;
 }
 
-.modal h2 {
-  margin: 0 0 1.5rem 0;
-  color: #212529;
-  font-size: 1.5rem;
-}
 
 .add-book-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
 .form-group label {
@@ -736,15 +497,8 @@ h1 {
 .form-group input:focus {
   outline: none;
   border-color: #86b7fe;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-.modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
 
 .cancel-btn {
   padding: 0.6rem 1.25rem;
@@ -758,7 +512,7 @@ h1 {
 }
 
 .cancel-btn:hover {
-  background-color: #f8f9fa;
+  background-color: #c6c6c6;
 }
 
 .add-btn {
@@ -781,3 +535,5 @@ h1 {
   background-color: #9ec5fe;
   cursor: not-allowed;
 }
+
+

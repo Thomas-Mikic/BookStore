@@ -1,20 +1,23 @@
 import { useState, useMemo } from 'react';
-import { useBooks } from '../hooks/useBooks';
 import { AddBookModal } from './AddBookModal';
 import type { Book } from '../types/book';
+import styles from './BooksList.module.css';
 
 interface BooksListProps {
   searchTerm: string;
   books: Book[];
   addBook: (book: { title: string; author: string; price: number }) => Promise<void>;
   deleteBook: (id: string) => Promise<void>;
+  onEditBook: (id: string, updates: { title?: string; author?: string; price?: number }) => Promise<void>;
   itemsPerPage?: number;
 }
 
 type SortDirection = 'asc' | 'desc' | null;
 
-export const BooksList = ({ searchTerm, books, addBook, deleteBook, itemsPerPage = 10 }: BooksListProps) => {
+export const BooksList = ({ searchTerm, books, addBook, deleteBook, onEditBook, itemsPerPage = 10 }: BooksListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [priceSort, setPriceSort] = useState<SortDirection>(null);
 
@@ -61,81 +64,106 @@ export const BooksList = ({ searchTerm, books, addBook, deleteBook, itemsPerPage
     }
   };
 
-  const handleDeleteBook = async (id: string) => {
+  const handleEditClick = (book: Book) => {
+    setEditingBook(book);
+    setIsEditing(true);
+  };
+
+
+
+  const handleSaveEdit = async (updates: { title: string; author: string; price: number }) => {
+    if (!editingBook) return;
+    
     try {
-      await deleteBook(id);
+      await onEditBook(editingBook.id, updates);
+      setIsEditing(false);
+      setEditingBook(null);
     } catch (error) {
-      console.error('Error deleting book:', error);
+      console.error('Error updating book:', error);
       throw error;
     }
   };
 
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditingBook(null);
+  };
+
   return (
-    <div className="books-list">
+    <div className={styles.booksList}>
       <AddBookModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddBook={handleAddBook}
       />
+      <AddBookModal
+        isOpen={isEditing}
+        onClose={handleCancelEdit}
+        onAddBook={handleSaveEdit}
+        onDeleteBook={editingBook ? () => deleteBook(editingBook.id) : undefined}
+        book={editingBook}
+        isEditing
+      />
       {filteredBooks.length > 0 ? (
         <>
-          <div className="books-table">
-            <div className="table-header">
-              <div className="header-cell number">#</div>
-              <div className="header-cell title">Title</div>
-              <div className="header-cell author">Author</div>
+          <div className={styles.booksTable}>
+            <div className={styles.tableHeader}>
+              <div className={`${styles.headerCell} ${styles.number}`}>#</div>
+              <div className={`${styles.headerCell} ${styles.title}`}>Title</div>
+              <div className={`${styles.headerCell} ${styles.author}`}>Author</div>
               <div 
-                className="header-cell price sortable" 
+                className={`${styles.headerCell} ${styles.price} ${styles.sortable}`} 
                 onClick={handlePriceSort}
               >
                 Price
-                {priceSort && (
-                  <span className="sort-arrow">
-                    {priceSort === 'asc' ? '↑' : '↓'}
-                  </span>
-                )}
+                <span className={styles.sortArrow}>
+                  {priceSort === 'asc' ? '↑' : priceSort === 'desc' ? '↓' : '↕'}
+                </span>
               </div>
-              <div className="header-cell actions">Actions</div>
+              <div className={`${styles.headerCell} ${styles.actions}`}>Actions</div>
             </div>
             {currentItems.map((book, index) => (
-              <div key={book.id} className="table-row">
-                <div className="cell number">{index + indexOfFirstItem + 1}</div>
-                <div className="cell title">{book.title}</div>
-                <div className="cell author">{book.author}</div>
-                <div className="cell price">${book.price}</div>
-                <div className="cell actions">
+              <div key={book.id} className={styles.tableRow}>
+                <div className={`${styles.cell} ${styles.number}`}>{index + indexOfFirstItem + 1}</div>
+                <div className={`${styles.cell} ${styles.title}`}>{book.title}</div>
+                <div className={`${styles.cell} ${styles.author}`}>{book.author}</div>
+                <div className={`${styles.cell} ${styles.price}`}>
+                  <span className={styles.priceAmount}>${book.price.toFixed(2)}</span>
+                </div>
+                <div className={`${styles.cell} ${styles.actions}`}>
                   <button 
-                    onClick={() => handleDeleteBook(book.id)} 
-                    className="delete-btn"
+                    onClick={() => handleEditClick(book)} 
+                    className={styles.editBtn}
                   >
-                    Delete
+                    Edit
                   </button>
+
                 </div>
               </div>
             ))}
           </div>
-          <div className="pagination">
+          <div className={styles.pagination}>
             <button 
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
-              className="pagination-btn"
+              className={styles.paginationBtn}
             >
               Previous
             </button>
-            <span className="page-info">
+            <span className={styles.pageInfo}>
               Page {currentPage} of {totalPages}
             </span>
             <button 
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages}
-              className="pagination-btn"
+              className={styles.paginationBtn}
             >
               Next
             </button>
           </div>
         </>
       ) : (
-        <div className="no-books">
+        <div className={styles.noBooks}>
           {searchTerm ? 'No books found' : 'No books yet'}
         </div>
       )}

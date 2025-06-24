@@ -1,0 +1,201 @@
+/* Books List Container */
+.booksList {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+/* Table Styles */
+.booksTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header */
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #ced4da;
+  padding: 0.75rem 1.5rem;
+  border-top: 1px solid #dee2e6;
+  width: 100%;
+}
+
+/* Table Row */
+.tableRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableRow:hover {
+  background-color: #f8f9fa;
+}
+
+/* Header and Cell Base Styles */
+.headerCell, .cell {
+  padding: 0.5rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  min-height: 44px; /* Ensure consistent row height */
+}
+
+/* Header Cell Specific */
+.headerCell {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6c757d;
+  user-select: none;
+}
+
+/* Cell Specific */
+.cell {
+  font-size: 0.95rem;
+  color: #495057;
+}
+
+/* Column Widths */
+.number, .title, .author, .price, .actions {
+  flex: 1;
+  padding: 0 0.5rem;
+  text-align: center;
+  min-width: 100px;
+}
+
+/* Specific column adjustments */
+.number {
+  max-width: 60px;
+  text-align: center;
+}
+
+.title {
+  text-align: left;
+  padding: 0 1rem;
+}
+
+.author {
+  text-align: left;
+  padding: 0 1rem;
+}
+
+.price {
+  text-align: right;
+  font-weight: 500;
+  padding-right: 1.5rem;
+}
+
+.actions {
+  max-width: 120px;
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+/* Price Amount Styling */
+.priceAmount {
+  color: #28a745;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-weight: 500;
+}
+
+/* Sortable Header */
+.sortable {
+  cursor: pointer;
+  transition: color 0.2s;
+  position: relative;
+  padding-right: 1.5rem;
+}
+
+.sortable:hover {
+  color: #495057;
+}
+
+.sortArrow {
+  position: absolute;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1em;
+  margin-left: 0.5rem;
+}
+
+
+
+/* No Books Message */
+.noBooks {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.pageInfo {
+  font-size: 0.95rem;
+  color: #495057;
+}
+
+.paginationBtn {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid #ced4da;
+  background-color: white;
+  color: #007bff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.paginationBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paginationBtn:not(:disabled):hover {
+  background-color: #cbcbcb;
+  transform: translateY(-1px);
+}
+
+.editBtn {
+  background-color: #2196F3;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editBtn:hover {
+  background-color: #1976D2;
+  transform: translateY(-1px);
+}

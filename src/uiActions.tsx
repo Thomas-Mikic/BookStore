@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { signInWithGoogle, signOutUser, addDocument, getDocuments, deleteDocument } from './firebase.ts';
+import { signInWithGoogle, signOutUser, addDocument, getDocs, deleteDocument, collection, db } from './firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { AddBookModal } from './components/AddBookModal';
@@ -31,7 +31,13 @@ export const useBooks = () => {
   useEffect(() => {
     const loadBooks = async () => {
       try {
-        const books = await getDocuments();
+        const querySnapshot = await getDocs(collection(db, 'books'));
+        const books = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          title: doc.data().title,
+          author: doc.data().author,
+          price: doc.data().price
+        } as Book));
         setBooks(books);
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Unknown error'));
@@ -45,8 +51,14 @@ export const useBooks = () => {
     try {
       await addDocument(book);
       // Refresh books list
-      const books = await getDocuments();
-      setBooks(books);
+      const querySnapshot = await getDocs(collection(db, 'books'));
+      const updatedBooks = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        title: doc.data().title,
+        author: doc.data().author,
+        price: doc.data().price
+      } as Book));
+      setBooks(updatedBooks);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Unknown error'));
     }
@@ -56,8 +68,14 @@ export const useBooks = () => {
     try {
       await deleteDocument(id);
       // Refresh books list
-      const books = await getDocuments();
-      setBooks(books);
+      const querySnapshot = await getDocs(collection(db, 'books'));
+      const updatedBooks = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        title: doc.data().title,
+        author: doc.data().author,
+        price: doc.data().price
+      } as Book));
+      setBooks(updatedBooks);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Unknown error'));
     }

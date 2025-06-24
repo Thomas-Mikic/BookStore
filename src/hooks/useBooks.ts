@@ -42,15 +42,14 @@ export const useBooks = () => {
     }
   };
 
-  const deleteBook = async (id: string) => {
+  const deleteBook = async (id: string): Promise<void> => {
     try {
-      if (window.confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
-        await deleteDocument(id);
-        await refreshBooks();
-      }
+      await deleteDocument(id);
+      // Update local state immediately for better UX
+      setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
     } catch (error) {
       console.error('Error deleting book:', error);
-      throw error;
+      throw error; // Re-throw to handle in the component
     }
   };
 
