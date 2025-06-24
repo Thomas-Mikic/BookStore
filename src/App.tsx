@@ -32,8 +32,13 @@ function App() {
   };
   const navigate = useNavigate();
 
-  // Load books
+  // Load books when user is authenticated
   useEffect(() => {
+    if (!user) {
+      setBooks([]); // Clear books when user logs out
+      return;
+    }
+
     const loadBooks = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'books'));
@@ -50,7 +55,7 @@ function App() {
     };
 
     loadBooks();
-  }, []);
+  }, [user]); // Add user to dependency array
 
   const handleLogout = async () => {
     const confirmLogout = window.confirm('Are you sure you want to log out?');
@@ -105,47 +110,52 @@ function App() {
     <div className="App">
       <h1>Book Store</h1>
       <h3>Discover and manage your favourite books!</h3>
-      {user && (
-        <div className="books-header">
-          <div className="header-left">
-            <input 
-              type="text" 
-              className="search-bar" 
-              placeholder="Search books..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+      
+      {user ? (
+        <>
+          <div className="books-header">
+            <div className="header-left">
+              <input 
+                type="text" 
+                className="search-bar" 
+                placeholder="Search books..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="header-right">
+              <button 
+                className="add-book-btn"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Add Book
+              </button>
+              <button 
+                className="logout-btn"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
           </div>
-          <div className="header-right">
-            <button 
-              className="add-book-btn"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Add Book
-            </button>
-            <button 
-              className="logout-btn"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </div>
+          <BooksList 
+            searchTerm={searchTerm} 
+            books={books} 
+            addBook={addBook}
+            deleteBook={handleDeleteBook}
+            onEditBook={handleEditBook}
+          />
+          <AddBookModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAddBook={handleAddBook}
+          />
+        </>
+      ) : (
+        <div className="login-container">
+          <LoginButton />
         </div>
       )}
-      <BooksList 
-        searchTerm={searchTerm} 
-        books={books} 
-        addBook={addBook}
-        deleteBook={handleDeleteBook}
-        onEditBook={handleEditBook}
-      />
-      
-      <AddBookModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAddBook={handleAddBook}
-      />
-      {!user && <LoginButton />}
     </div>
   )
 }

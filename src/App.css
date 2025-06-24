@@ -432,15 +432,28 @@ h1 {
   opacity: 0.9;
 }
 
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
 .login-button {
   padding: 12px 24px;
   font-size: 1.2rem;
   font-weight: 600;
   color: white;
-  background: #007bff;
+  background: #2a8f19;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-button:hover {
+  background: #206c12;
+  transform: translateY(-1px);
 }
 
 .close-btn {
